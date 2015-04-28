@@ -61,19 +61,25 @@
 
                     for(var i = 0; i < delictsArr.length; i++) {
                         var selected = delictsArr[i];
-                        console.log(selected);
                         // AJAX request to https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyAjWEJGC9ozZSYrtCgXk8SUf6orgbPAFc
                         $.ajax( {
                             url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + selected.adress + "," + selected.city + ",&key=AIzaSyAjWEJGC9ozZSYrtCgXk8SUf6orgbPAFcM"
                         }).done(function(dataCords) {
                             var cords = dataCords.results[0].geometry.location;
 
+                            var type = selected.type;
+
                             // Create marker on location
-                            var marker = new google.maps.Marker({
+                            var delictMarker = new google.maps.Marker({
                                 position: cords,
                                 map: map,
-                                icon: 'images/politie.png'
+                                icon: 'images/' + type + '.png'
                             });
+
+                            google.maps.event.addListener(delictMarker, 'click', function() {
+                                getTweets(delictMarker.position.k.toString() + "," + delictMarker.position.D.toString() + ",10mi");
+                            });
+
                         });
 
                     }
@@ -82,6 +88,33 @@
                 // Load all delicts from location
                 // add click event for every delict
                 // On click load twitter messages
+            }
+
+            function getTweets(curLocation) {
+                $.ajax({
+                    url: "twitter.php?q=hallo&geocode=" + curLocation + "&count=10",
+                    type: "GET"
+                }).done(function(dataArray) {
+                    var tweetArray = JSON.parse(dataArray).statuses;
+
+                    for(var i = 0; i < tweetArray.length; i++) {
+                        var selected = tweetArray[i];
+
+
+                        console.log(selected);
+                        
+                        var time = selected.createdAt;
+                        var cords = selected.coordinates.coordinates;
+
+                        var source = selected.source;
+                        var text = selected.text;
+
+                        console.log(source + ", => " + text);
+
+                    }
+
+                    // for every tweet, place marker
+                })
             }
 
             function handleNoGeolocation(errorFlag) {
