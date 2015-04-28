@@ -62,7 +62,7 @@
 		} 
 
 		$data = array(
-			'description'	=> $tds_1->item(1)->textContent,
+			'description'	=> trim($tds_1->item(1)->textContent, "'"),
 			'date'			=> $datetime[0],
 			'time'			=> $datetime[1],
 			//'address'		=> $tds_2->item(1)->textContent,
