@@ -37,7 +37,7 @@
                     });
 
                     // Load delicts on location
-                    
+
 
                 }, function() {
                     handleNoGeolocation(browserSupportFlag);
@@ -47,6 +47,13 @@
             else {
                 browserSupportFlag = false;
                 handleNoGeolocation(browserSupportFlag);
+            }
+
+            loadDelicts(curLocation) {
+
+                
+
+
             }
 
             function handleNoGeolocation(errorFlag) {
