@@ -96,12 +96,12 @@
             function getTweets(curLocation) {
                 $.ajax({
                     url: "twitter.php",
-                    params: {
+                    data: {
                         q: "hallo",
                         geocode: curLocation,
                         count: 10
                     },
-                    type: "POST"
+                    method: "POST"
                 }).done(function(dataArray) {
                     var tweetArray = JSON.parse(dataArray).statuses;
 
@@ -123,18 +123,17 @@
                             icon: 'images/twitter.png'
                         });
 
-                        listenMarker(twitterMarker, selected.user.profile_image_url);
+                        listenMarker(twitterMarker, selected);
                     }
 
                     // for every tweet, place marker
                 })
             }
 
-            function listenMarker (marker, imgURL)
+            function listenMarker (marker, tweet)
             {
-
                 var infowindow = new google.maps.InfoWindow({
-                content: "<img src=" + imgURL + "></img>"
+                content: "<img src=" + selected.user.profile_image_url + "></img><h3>" + selected.user.name + "</h3>"
                 });
 
                 // so marker is associated with the closure created for the listenMarker function call
