@@ -69,6 +69,9 @@
 
                             var type = selected.type;
 
+                            if(type == null)
+                                type = "politie";
+
                             // Create marker on location
                             var delictMarker = new google.maps.Marker({
                                 position: cords,
@@ -99,22 +102,40 @@
 
                     for(var i = 0; i < tweetArray.length; i++) {
                         var selected = tweetArray[i];
-
-
-                        console.log(selected);
                         
                         var time = selected.createdAt;
-                        var cords = selected.coordinates.coordinates;
+                        var cords = { lat: selected.coordinates.coordinates[1], lng: selected.coordinates.coordinates[0] };
 
                         var source = selected.source;
                         var text = selected.text;
 
-                        console.log(source + ", => " + text);
+                        console.log(cords);
 
+                        // Create marker on location
+                        var twitterMarker = new google.maps.Marker({
+                            position: cords,
+                            map: map,
+                            icon: 'images/twitter.png'
+                        });
+
+                        listenMarker(twitterMarker, selected.user.profile_image_url);
                     }
 
                     // for every tweet, place marker
                 })
+            }
+
+            function listenMarker (marker, imgURL)
+            {
+
+                var infowindow = new google.maps.InfoWindow({
+                content: "<img src=" + imgURL + "></img>"
+                });
+
+                // so marker is associated with the closure created for the listenMarker function call
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.open(map, marker);
+                });
             }
 
             function handleNoGeolocation(errorFlag) {
