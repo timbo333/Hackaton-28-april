@@ -10,17 +10,44 @@
     <script type="text/javascript">
         function initialize() {
             var mapOptions = {
-                center: { lat: 52.500035, lng: 6.07942300000002 },
-                zoom: 12
+                zoom: 12,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-            var map = new google.maps.Map(document.getElementById('map-canvas'),
-                mapOptions);
 
-            var marker = new google.maps.Marker({
-                position: { lat: 52.500035, lng: 6.07942300000002 },
-                map: map,
-                title: 'Windesheim, Zwolle'
-            });
+            var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+            // Try W3C Geolocation (Preferred)
+            if(navigator.geolocation) {
+                browserSupportFlag = true;
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+                    map.setCenter(initialLocation);
+
+                    var image = 'images/gpsMarker.png';
+
+                    var marker = new google.maps.Marker({
+                        position: initialLocation,
+                        map: map,
+                        icon: image
+                    });
+
+
+                }, function() {
+                    handleNoGeolocation(browserSupportFlag);
+                });
+            }
+            // Browser doesn't support Geolocation
+            else {
+                browserSupportFlag = false;
+                handleNoGeolocation(browserSupportFlag);
+            }
+
+            function handleNoGeolocation(errorFlag) {
+                if (errorFlag == true)
+                    alert("Geolocation service failed.");
+                else
+                    alert("Your browser doesn't support geolocation.");
+            }
         }
         google.maps.event.addDomListener(window, 'load', initialize);
     </script>
