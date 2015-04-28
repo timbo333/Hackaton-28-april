@@ -10,6 +10,9 @@
     </script>
     <script src="jquery-1.11.2.js"></script>
     <script type="text/javascript">
+
+        var tweetMarkers = [];
+
         function initialize() {
             loadDelicts(1);
             // Set map options
@@ -89,7 +92,7 @@
                               fillOpacity: 0.35,
                               map: map,
                               center: cords,
-                              radius: 5000
+                              radius: 16093.44
                             };
                             cityCircle = new google.maps.Circle(populationOptions);
 
@@ -117,6 +120,12 @@
                     },
                     method: "POST"
                 }).done(function(dataArray) {
+
+                    for(var i = 0; i < tweetMarkers.length; i++) {
+                        tweetMarkers[i].setMap(null);
+                    }
+                    tweetMarkers = [];
+
                     var tweetArray = JSON.parse(dataArray).statuses;
 
                     for(var i = 0; i < tweetArray.length; i++) {
@@ -136,6 +145,8 @@
                             map: map,
                             icon: 'images/twitter.png'
                         });
+
+                        tweetMarkers.push(twitterMarker);
 
                         listenMarker(twitterMarker, selected);
                     }
