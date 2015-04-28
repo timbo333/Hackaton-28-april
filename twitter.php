@@ -16,9 +16,11 @@ $twitter_path = '1.1/search/tweets.json';
 $http_code = $connection->request('GET', $connection->url($twitter_path), $parameters );
 
 if ($http_code === 200) {
+    $response = strip_tags($connection->response['response']);
     echo $response;
 } else {
     http_response_code($http_code);
     echo "Error ID: ",$http_code, "<br>\n";
     echo "Error: ",$connection->response['error'], "<br>\n";
 }
+?>
