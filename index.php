@@ -64,8 +64,7 @@
                         // AJAX request to https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyAjWEJGC9ozZSYrtCgXk8SUf6orgbPAFc
                         $.ajax( {
                             url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + selected.adress + "," + selected.city + ",&key=AIzaSyAjWEJGC9ozZSYrtCgXk8SUf6orgbPAFcM"
-                        }).done((function (selected) {
-                            return function(dataCords) {
+                        }).done(function(dataCords) {
                             var cords = dataCords.results[0].geometry.location;
 
                             var type = selected.type;
@@ -94,46 +93,10 @@
                             cityCircle = new google.maps.Circle(populationOptions);
 
                             google.maps.event.addListener(delictMarker, 'click', function() {
-                                
-                                var contentString = 
-
-                                    '<table>'+
-                                        '<tr>'+
-                                            '<th style="text-align: left;">Beschrijving</th>'+
-                                            '<td>' + selected.description + '</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<th style="text-align: left;">Datum</th>'+
-                                            '<td>' + selected.date + '</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<th style="text-align: left;">Tijd</th>'+
-                                            '<td>' + selected.time + '</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<th style="text-align: left;">Stad</th>'+
-                                            '<td>' + selected.city + '</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<th style="text-align: left;">Postcode</th>'+
-                                            '<td>' + selected.zip + '</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<th style="text-align: left;">Adres</th>'+
-                                            '<td>' + selected.adress + '</td>'+
-                                        '</tr>'+
-                                    '</table>';
-
-                                var infoWindow = new google.maps.InfoWindow({
-                                    content: contentString
-                                });
-
-                                infoWindow.open(map, delictMarker);
-
                                 getTweets(delictMarker.position.k.toString() + "," + delictMarker.position.D.toString() + ",10mi");
                             });
 
-                        }; })(selected));
+                        });
 
                     }
                 });
@@ -145,8 +108,13 @@
 
             function getTweets(curLocation) {
                 $.ajax({
-                    url: "twitter.php?q=hallo&geocode=" + curLocation + "&count=10",
-                    type: "GET"
+                    url: "twitter.php",
+                    data: {
+                        q: "hallo",
+                        geocode: curLocation,
+                        count: 10
+                    },
+                    method: "POST"
                 }).done(function(dataArray) {
                     var tweetArray = JSON.parse(dataArray).statuses;
 
@@ -168,18 +136,17 @@
                             icon: 'images/twitter.png'
                         });
 
-                        listenMarker(twitterMarker, selected.user.profile_image_url);
+                        listenMarker(twitterMarker, selected);
                     }
 
                     // for every tweet, place marker
                 })
             }
 
-            function listenMarker (marker, imgURL)
+            function listenMarker (marker, tweet)
             {
-
                 var infowindow = new google.maps.InfoWindow({
-                content: "<img src=" + imgURL + "></img>"
+                content: "<img src=" + selected.user.profile_image_url + "></img><h3>" + selected.user.name + "</h3>"
                 });
 
                 // so marker is associated with the closure created for the listenMarker function call
