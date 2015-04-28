@@ -97,6 +97,42 @@
                             cityCircle = new google.maps.Circle(populationOptions);
 
                             google.maps.event.addListener(delictMarker, 'click', function() {
+                                
+                                var contentString = 
+
+                                    '<table>'+
+                                        '<tr>'+
+                                            '<th style="text-align: left;">Beschrijving</th>'+
+                                            '<td>' + selected.description + '</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<th style="text-align: left;">Datum</th>'+
+                                            '<td>' + selected.date + '</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<th style="text-align: left;">Tijd</th>'+
+                                            '<td>' + selected.time + '</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<th style="text-align: left;">Stad</th>'+
+                                            '<td>' + selected.city + '</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<th style="text-align: left;">Postcode</th>'+
+                                            '<td>' + selected.zip + '</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<th style="text-align: left;">Adres</th>'+
+                                            '<td>' + selected.adress + '</td>'+
+                                        '</tr>'+
+                                    '</table>';
+
+                                var infoWindow = new google.maps.InfoWindow({
+                                    content: contentString
+                                });
+
+                                infoWindow.open(map, delictMarker);
+
                                 getTweets(delictMarker.position.k.toString() + "," + delictMarker.position.D.toString() + ",10mi");
                             });
 
