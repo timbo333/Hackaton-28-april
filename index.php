@@ -7,8 +7,10 @@
     <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjWEJGC9ozZSYrtCgXk8SUf6orgbPAFcM">
     </script>
+    <script src="jquery-1.11.2.js"></script>
     <script type="text/javascript">
         function initialize() {
+            loadDelicts(1);
             // Set map options
             var mapOptions = {
                 zoom: 12,
@@ -49,11 +51,37 @@
                 handleNoGeolocation(browserSupportFlag);
             }
 
-            loadDelicts(curLocation) {
+            function loadDelicts(curLocation) {
+                var delictsArr = [];
 
-                
+                $.ajax({
+                    url: "meldingen.php"
+                }).done(function(dataDelicts) {
+                    delictsArr = JSON.parse(dataDelicts);
 
+                    for(var i = 0; i < delictsArr.length; i++) {
+                        var selected = delictsArr[i];
+                        console.log(selected);
+                        // AJAX request to https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyAjWEJGC9ozZSYrtCgXk8SUf6orgbPAFc
+                        $.ajax( {
+                            url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + selected.adress + "," + selected.city + ",&key=AIzaSyAjWEJGC9ozZSYrtCgXk8SUf6orgbPAFcM"
+                        }).done(function(dataCords) {
+                            var cords = dataCords.results[0].geometry.location;
 
+                            // Create marker on location
+                            var marker = new google.maps.Marker({
+                                position: cords,
+                                map: map,
+                                icon: 'images/politie.png'
+                            });
+                        });
+
+                    }
+                });
+
+                // Load all delicts from location
+                // add click event for every delict
+                // On click load twitter messages
             }
 
             function handleNoGeolocation(errorFlag) {
