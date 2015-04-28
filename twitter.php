@@ -11,6 +11,7 @@ $parameters = array();
 $parameters['geocode'] = (isset($_POST['geocode'])) ? $_POST['geocode'] : "";
 $parameters['q'] = (isset($_POST['q'])) ? $_POST['q'] : "";
 $parameters['count'] = (isset($_POST['count'])) ? $_POST['count'] : 10;
+$parameters['since'] = (isset($_POST['since'])) ? $_POST['since'] : "2015-01-01";
 $twitter_path = '1.1/search/tweets.json';
 
 $http_code = $connection->request('GET', $connection->url($twitter_path), $parameters );
