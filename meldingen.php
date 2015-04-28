@@ -56,7 +56,10 @@
 		} else
 		if(startsWith($h1_text, 'Ambulance')) {
 			$type = 'ambulance';
-		} //else
+		} else
+		if(startsWith($h1_text, 'Politie')) {
+			$type = 'politie';
+		} 
 
 		$data = array(
 			'description'	=> $tds_1->item(1)->textContent,
