@@ -4,6 +4,7 @@
     <style type="text/css">
         html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
     </style>
+    <link type="text/css" rel="stylesheet" href="tweetStyle.css"/>
     <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjWEJGC9ozZSYrtCgXk8SUf6orgbPAFcM">
     </script>
@@ -146,7 +147,7 @@
             function listenMarker (marker, tweet)
             {
                 var infowindow = new google.maps.InfoWindow({
-                content: "<img src=" + selected.user.profile_image_url + "></img><h3>" + selected.user.name + "</h3>"
+                content: "<img src=" + tweet.user.profile_image_url + "></img><h3 id=\"username\">" + tweet.user.name + "</h3>"
                 });
 
                 // so marker is associated with the closure created for the listenMarker function call
