@@ -8,21 +8,15 @@ $connection = new tmhOAuth(array(
 ));
 $parameters = array();
 
-$parameters['geocode'] = (isset($_GET['geocode'])) ? $_GET['geocode'] : "";
-$parameters['q'] = (isset($_GET['q'])) ? $_GET['q'] : "";
-$parameters['count'] = (isset($_GET['count'])) ? $_GET['count'] : 10;
+$parameters['geocode'] = (isset($_POST['geocode'])) ? $_POST['geocode'] : "";
+$parameters['q'] = (isset($_POST['q'])) ? $_POST['q'] : "";
+$parameters['count'] = (isset($_POST['count'])) ? $_POST['count'] : 10;
 $twitter_path = '1.1/search/tweets.json';
 
 $http_code = $connection->request('GET', $connection->url($twitter_path), $parameters );
 
 if ($http_code === 200) {
-    $response = strip_tags($connection->response['response']);
-
-    if (isset($_GET['callback'])) { // if we ask for a jsonp callback function
-        echo $_GET['callback'],'(', $response,');';
-    } else {
-        echo $response;
-    }
+    echo $response;
 } else {
     echo "Error ID: ",$http_code, "<br>\n";
     echo "Error: ",$connection->response['error'], "<br>\n";
