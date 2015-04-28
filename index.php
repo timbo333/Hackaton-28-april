@@ -9,28 +9,35 @@
     </script>
     <script type="text/javascript">
         function initialize() {
+            // Set map options
             var mapOptions = {
                 zoom: 12,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
+            // Create map
             var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-            // Try W3C Geolocation (Preferred)
+            // Try geolocation (WC3)
             if(navigator.geolocation) {
                 browserSupportFlag = true;
                 navigator.geolocation.getCurrentPosition(function(position) {
-                    initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+                    // Get current location
+                    initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                     map.setCenter(initialLocation);
 
+                    // Select postion marker image
                     var image = 'images/gpsMarker.png';
 
+                    // Create marker on location
                     var marker = new google.maps.Marker({
                         position: initialLocation,
                         map: map,
                         icon: image
                     });
 
+                    // Load delicts on location
+                    
 
                 }, function() {
                     handleNoGeolocation(browserSupportFlag);
