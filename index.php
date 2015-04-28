@@ -4,7 +4,6 @@
     <style type="text/css">
         html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
     </style>
-    <link type="text/css" rel="stylesheet" href="tweetStyle.css"/>
     <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjWEJGC9ozZSYrtCgXk8SUf6orgbPAFcM">
     </script>
@@ -167,13 +166,7 @@
                     for(var i = 0; i < tweetArray.length; i++) {
                         var selected = tweetArray[i];
                         
-                        var time = selected.createdAt;
                         var cords = { lat: selected.coordinates.coordinates[1], lng: selected.coordinates.coordinates[0] };
-
-                        var source = selected.source;
-                        var text = selected.text;
-
-                        console.log(cords);
 
                         // Create marker on location
                         var twitterMarker = new google.maps.Marker({
@@ -193,8 +186,19 @@
 
             function listenMarker (marker, tweet)
             {
+                var contentString = '<div id="content">'+
+                    '<div id="siteNotice">'+
+                    '</div>'+
+                    '<h1 id="firstHeading" class="firstHeading"><img src="' + tweet.user.profile_image_url + '">' +
+                    '<h3>"' + tweet.user.name + '"</h3><h6>"' + tweet.user.description + '"</h6></h1>'+
+                    '<div id="bodyContent">'+
+                    '<p>' + tweet.text + '</p>'+
+                    '<p>' + tweet.created_at + ' on: ' + tweet.source + '</p>'+
+                    '</div>'+
+                    '</div>';
+
                 var infowindow = new google.maps.InfoWindow({
-                content: "<img src=" + tweet.user.profile_image_url + "></img><h3 id=\"username\">" + tweet.user.name + "</h3>"
+                    content: contentString
                 });
 
                 // so marker is associated with the closure created for the listenMarker function call

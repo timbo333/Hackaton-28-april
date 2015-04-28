@@ -1,3 +1,16 @@
-#username {
+#userdetails {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#userDiv {
+    display: inline-block;
+}
+
+#userDesc {
+    vertical-align: bottom;
+}
+
+#userimg {
     display: inline-block;
 }
