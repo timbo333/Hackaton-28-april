@@ -67,7 +67,8 @@
                         // AJAX request to https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyAjWEJGC9ozZSYrtCgXk8SUf6orgbPAFc
                         $.ajax( {
                             url: "https://maps.googleapis.com/maps/api/geocode/json?address=" + selected.adress + "," + selected.city + ",&key=AIzaSyAjWEJGC9ozZSYrtCgXk8SUf6orgbPAFcM"
-                        }).done(function(dataCords) {
+                        }).done((function (selected) {
+                            return function(dataCords) {
                             var cords = dataCords.results[0].geometry.location;
 
                             var type = selected.type;
@@ -132,10 +133,11 @@
 
                                 infoWindow.open(map, delictMarker);
 
-                                getTweets(delictMarker.position.k.toString() + "," + delictMarker.position.D.toString() + ",10mi");
+                                getTweets(delictMarker.position.k.toString() + "," + delictMarker.position.D.toString() + ",10mi", selected.date);
                             });
 
-                        });
+                        };
+                    })(selected));
 
                     }
                 });
@@ -145,13 +147,16 @@
                 // On click load twitter messages
             }
 
-            function getTweets(curLocation) {
+            function getTweets(curLocation, date) {
+                date = date.split('-');
+                date = date[2] + '-' + date[1] + '-' + date[0];
                 $.ajax({
                     url: "twitter.php",
                     data: {
-                        q: "hallo",
+                        q: "",
                         geocode: curLocation,
-                        count: 10
+                        count: 10,
+                        since: date
                     },
                     method: "POST"
                 }).done(function(dataArray) {
