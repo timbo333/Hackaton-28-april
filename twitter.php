@@ -15,7 +15,7 @@ $twitter_path = '1.1/search/tweets.json';
 
 $http_code = $connection->request('GET', $connection->url($twitter_path), $parameters );
 
-if ($http_code === 200) { // if everything's good
+if ($http_code === 200) {
     $response = strip_tags($connection->response['response']);
 
     if (isset($_GET['callback'])) { // if we ask for a jsonp callback function
